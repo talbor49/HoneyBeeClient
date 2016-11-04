@@ -22,13 +22,13 @@ func Connect(ip string, port int) dbConn {
 	return dbConn{conn, "", ""}
 }
 
-func (conn *dbConn) Set(key string, value string) {
-	request := fmt.Sprintf("SET %s %s", key, value)
+func (conn *dbConn) Set(key string, value string, options string) {
+	request := fmt.Sprintf("SET %s %s %s", key, value, options)
 	fmt.Fprintf(conn, request)
 }
 
-func (conn *dbConn) Get(key string) string {
-	request := fmt.Sprintf("GET %s", key)
+func (conn *dbConn) Get(key string, options string) string {
+	request := fmt.Sprintf("GET %s %s", key, options)
 	fmt.Fprintf(conn, request)
 	message, err := bufio.NewReader(conn).ReadString('\n')
 	if err != nil {
@@ -38,18 +38,18 @@ func (conn *dbConn) Get(key string) string {
 	return message
 }
 
-func (conn *dbConn) DeleteKey(key string) {
-	request := fmt.Sprintf("DELETE KEY %s", key)
+func (conn *dbConn) DeleteKey(key string, options string) {
+	request := fmt.Sprintf("DELETE KEY %s %s", key, options)
 	fmt.Fprintf(conn, request)
 }
 
-func (conn *dbConn) DeleteBucket(bucket string) {
-	request := fmt.Sprintf("DELETE BUCKET %s", bucket)
+func (conn *dbConn) DeleteBucket(bucket string, options string) {
+	request := fmt.Sprintf("DELETE BUCKET %s %s", bucket, options)
 	fmt.Fprintf(conn, request)
 }
 
-func (conn *dbConn) Authenticate(user string, password string, bucket string) {
-	request := fmt.Sprintf("AUTH %s %s %s", user, password, bucket)
+func (conn *dbConn) Authenticate(user string, password string, bucket string, options string) {
+	request := fmt.Sprintf("AUTH %s %s %s %s", user, password, bucket, options)
 	fmt.Fprintf(conn, request)
 }
 
