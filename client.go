@@ -1,23 +1,54 @@
-package main
+package client
 
 import (
-	"flag"
 	"fmt"
 	"net"
+	"bufio"
 )
 
-func main() {
-	ip := flag.String("ip", "localhost", "ip the server is on")
-	port := flag.Int("port", 4590, "port Honey Bee is open on")
-	flag.Parse()
-	addr := fmt.Sprintf("%s:%d", *ip, *port)
+var conn net.Conn
 
-	conn, err := net.Dial("tcp", addr)
+func Set(key string, value string) {
+	request := fmt.Sprintf("SET %s %s", key, value)
+	fmt.Fprintf(conn, request)
+}
 
+func Get(key string) string {
+	request := fmt.Sprintf("GET %s", key)
+	fmt.Fprintf(conn, request)
+	message, err := bufio.NewReader(conn).ReadString('\n')
+	if err != nil {
+		//just for now
+		panic(err.Error())
+	}
+	return message
+}
+
+func DeleteKey(key string) {
+	request := fmt.Sprintf("DELETE KEY %s", key)
+	fmt.Fprintf(conn, request)
+}
+
+func DeleteBucket(bucket string) {
+	request := fmt.Sprintf("DELETE BUCKET %s", bucket)
+	fmt.Fprintf(conn, request)
+}
+
+func Authenticate(user string, password string, bucket string) {
+	request := fmt.Sprintf("AUTH %s %s %s", user, password, bucket)
+	fmt.Fprintf(conn, request)
+}
+
+func Connect(ip string, port int) {
+	addr := fmt.Sprintf("%s:%d", ip, port)
+	_conn, err := net.Dial("tcp", addr)
+	conn = _conn
 	if err != nil {
 		panic(err.Error())
 	}
+}
 
-	fmt.Fprintf(conn, "SET foo bar")
-	//fmt.Fprintf()
+
+func Disconnect() {
+	conn.Close()
 }
