@@ -1,21 +1,16 @@
 package main
 
-
 import (
-	"net"
 	"flag"
 	"fmt"
+	"net"
 )
 
-
-
-
-
 func main() {
-	ip := flag.String("ip", 4590, "ip the server is on")
+	ip := flag.String("ip", "localhost", "ip the server is on")
 	port := flag.Int("port", 4590, "port Honey Bee is open on")
 	flag.Parse()
-	addr := fmt.Sprintf("%s:%d", (*ip, *addr))
+	addr := fmt.Sprintf("%s:%d", *ip, *port)
 
 	conn, err := net.Dial("tcp", addr)
 
@@ -23,5 +18,6 @@ func main() {
 		panic(err.Error())
 	}
 
+	fmt.Fprintf(conn, "SET foo bar")
 	//fmt.Fprintf()
 }
