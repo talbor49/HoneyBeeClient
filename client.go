@@ -48,11 +48,18 @@ func (conn *dbConn) DeleteBucket(bucket string, options string) {
 	conn.Write([]byte(request))
 }
 
-func (conn *dbConn) Authenticate(user string, password string, bucket string) {
-	request := fmt.Sprintf("AUTH %s %s %s", user, password, bucket)
+func (conn *dbConn) Authenticate(user string, password string) {
+	request := fmt.Sprintf("AUTH %s %s", user, password)
+	conn.Write([]byte(request))
+}
+
+func (conn *dbConn) UseBucket(bucket string) {
+	request := fmt.Sprintf("USE %s", bucket)
 	fmt.Printf(request)
 	conn.Write([]byte(request))
 }
+
+
 
 func (conn *dbConn) Disconnect() {
 	conn.Close()
