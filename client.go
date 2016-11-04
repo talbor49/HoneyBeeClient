@@ -1,4 +1,4 @@
-package client
+package HoneyBeeClient
 
 import (
 	"bufio"
@@ -48,8 +48,9 @@ func (conn *dbConn) DeleteBucket(bucket string, options string) {
 	fmt.Fprintf(conn, request)
 }
 
-func (conn *dbConn) Authenticate(user string, password string, bucket string, options string) {
-	request := fmt.Sprintf("AUTH %s %s %s %s", user, password, bucket, options)
+func (conn *dbConn) Authenticate(user string, password string, bucket string) {
+	request := fmt.Sprintf("AUTH %s %s %s", user, password, bucket)
+	fmt.Printf(request)
 	fmt.Fprintf(conn, request)
 }
 
