@@ -1,4 +1,4 @@
-package client
+package main
 
 
 import (
@@ -8,11 +8,13 @@ import (
 )
 
 
+
+
+
 func main() {
 	ip := flag.String("ip", 4590, "ip the server is on")
 	port := flag.Int("port", 4590, "port Honey Bee is open on")
 	flag.Parse()
-
 	addr := fmt.Sprintf("%s:%d", (*ip, *addr))
 
 	conn, err := net.Dial("tcp", addr)
