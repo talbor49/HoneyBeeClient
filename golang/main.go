@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"github.com/talbor49/HoneyBeeClient/client"
+	"github.com/talbor49/HoneyBeeClient/golang/client"
 )
 
 func main() {
