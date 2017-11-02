@@ -7,11 +7,11 @@ import (
 
 
 func main() {
-	log.Println("Hello I am main! :)")
 	ip := "127.0.0.1"
 	port := 8080
 	conn := HoneyBee.Connect(ip, port)
 	log.Println("Authenticating...")
+	conn.CreateUser("talbor49", "1234")
 	conn.Authenticate("talbor49", "1234")
 	//log.Println("Creating...")
 	//conn.CreateBuck

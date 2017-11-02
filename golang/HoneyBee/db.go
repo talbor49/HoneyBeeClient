@@ -6,7 +6,6 @@ import (
 	"net"
 	"github.com/talbor49/HoneyBee/grammar"
 	"log"
-	"strconv"
 )
 
 type dbConn struct {
@@ -17,12 +16,12 @@ type dbConn struct {
 
 func (conn *dbConn) sendDbRequest(request grammar.Request) (grammar.Response) {
 	rawRequest := grammar.BuildRawRequest(request)
-	fmt.Printf("Raw request sending: %s\n", rawRequest)
-	fmt.Printf("Raw request type sending: %s\n", strconv.Itoa(int(rawRequest[0])))
+	log.Printf("Raw request type sending: %d\n", rawRequest[0])
 	conn.Write(rawRequest)
 	rawResponse, _ := bufio.NewReader(conn).ReadString('\n')
 	response := grammar.GetResponseFromBuffer([]byte(rawResponse))
-	log.Printf("Raw Response got: %s", rawResponse)
+	//log.Printf("Raw Response got: %s", rawResponse)
+	log.Printf("Response type: %d, status: %d, data: %s\n", response.Type, response.Status, response.Data)
 	return response
 }
 
@@ -88,8 +87,16 @@ func (conn *dbConn) Quit() {
 
 func (conn *dbConn) CreateBucket(bucket string)  {
 	log.Printf("CREATE BUCKET %s", bucket)
-	createRequest := grammar.Request{Type:grammar.CREATE_REQUEST, Status:grammar.BUCKET}
+	createRequest := grammar.Request{Type:grammar.CREATE_BUCKET_REQUEST, Status:grammar.BUCKET}
 	createRequest.RequestData = []string{bucket}
+	conn.sendDbRequest(createRequest)
+}
+
+
+func (conn *dbConn) CreateUser(username string, password string)  {
+	log.Printf("CREATE USER %s:%s", username, password)
+	createRequest := grammar.Request{Type:grammar.CREATE_USER_REQUEST, Status:grammar.USER}
+	createRequest.RequestData = []string{username, password}
 	conn.sendDbRequest(createRequest)
 }
 
