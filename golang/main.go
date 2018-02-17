@@ -8,7 +8,7 @@ import (
 
 func main() {
 	ip := "127.0.0.1"
-	port := 4590
+	port := 8080
 	conn := HoneyBee.Connect(ip, port)
 	log.Println("Authenticating...")
 	conn.CreateUser("talbor49", "1234")

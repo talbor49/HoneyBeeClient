@@ -6,7 +6,6 @@ import (
 	"github.com/talbor49/HoneyBee/grammar"
 	"log"
 	"net"
-	"strconv"
 )
 
 type dbConn struct {
@@ -17,13 +16,11 @@ type dbConn struct {
 
 func (conn *dbConn) sendDbRequest(request grammar.Request) grammar.Response {
 	rawRequest := grammar.BuildRawRequest(request)
-	fmt.Printf("Raw request sending: %s\n", rawRequest)
-	fmt.Printf("Raw request type sending: %s\n", strconv.Itoa(int(rawRequest[0])))
 	conn.Write(rawRequest)
 	rawResponse, _ := bufio.NewReader(conn).ReadString('\n')
 	response := grammar.GetResponseFromBuffer([]byte(rawResponse))
 	// log.Printf("Raw Response got: %s", rawResponse)
-	fmt.Println(grammar.ResponseToString(response))
+	log.Println(grammar.ResponseToString(response))
 	return response
 }
 
@@ -34,7 +31,7 @@ func Connect(ip string, port int) dbConn {
 	if err != nil {
 		panic(err.Error())
 	}
-	fmt.Printf("Connected to %s:%d", ip, port)
+	log.Printf("Connected to %s:%d", ip, port)
 	return dbConn{conn, "", ""}
 }
 
